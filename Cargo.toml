@@ -1,0 +1,30 @@
+[package]
+name = "coffer"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.104"
+argon2 = "0.6.0"
+chacha20poly1305 = "0.11.0"
+clap = { version = "4.6.7", features = ["derive", "env"] }
+dirs = "7.0.0"
+getrandom = "0.4.3"
+rpassword = "7.5.4"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+tempfile = "3.27.0"
+thiserror = "2.0.21"
+time = { version = "0.3.55", features = ["formatting", "parsing"] }
+zeroize = "1.9.0"
+
+# Keep dependencies optimized in dev/test builds so Argon2 runs at a
+# realistic speed while our own code stays debuggable.
+[profile.dev.package."*"]
+opt-level = 2
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
